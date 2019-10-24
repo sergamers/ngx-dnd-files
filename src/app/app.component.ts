@@ -6,5 +6,16 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'dnd';
+  public isUploadFile(file: File): void {
+    // https://goload.ru/api/
+    const formData = new FormData();
+    formData.append('filename', file);
+    fetch('https://goload.ru/api/upload.php', {
+      method: 'POST',
+      body: formData
+    })
+      .then(response => response.json())
+      .then(success => console.log(success))
+      .catch(error => console.log(error));
+  }
 }

@@ -3,10 +3,12 @@ import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { DndFilesDirective } from './dnd-files.directive';
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    DndFilesDirective
   ],
   imports: [
     BrowserModule,
