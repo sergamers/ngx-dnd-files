@@ -4,6 +4,7 @@
       class="Dnd"
       [class.Dnd--hoverDnd]="dnd.inDragArea"
       appDndFiles="multy"
+      [acceptType]="['image/*']"
       #dnd="appDndFiles"
       (isUploadFile)="isUploadFile($event)"
     >

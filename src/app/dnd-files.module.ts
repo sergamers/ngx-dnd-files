@@ -17,4 +17,4 @@ import { DndFilesDirective } from './dnd-files.directive';
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class DndFilesModule { }

@@ -1,12 +1,15 @@
-import { Directive, ElementRef, Input, OnInit, HostListener, Output, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, Input, OnInit, HostListener, Output, EventEmitter, OnDestroy } from '@angular/core';
 
 @Directive({
   selector: '[appDndFiles]',
   exportAs: 'appDndFiles'
 })
-export class DndFilesDirective implements OnInit {
+export class DndFilesDirective implements OnInit, OnDestroy {
   /** Режим загрузки файлов */
   @Input() private isMulti = true;
+
+  /** Типы документов */
+  @Input() private acceptType: string[] = [];
 
   /** Событие, которое говорит, что нужно загрузить файл */
   @Output() private readonly isUploadFile = new EventEmitter<File[]>();
@@ -63,10 +66,20 @@ export class DndFilesDirective implements OnInit {
     );
 
     this.el.nativeElement.appendChild(this.fileField);
+
+    this.fileField.addEventListener('change', this.onFieldChange.bind(this));
   }
 
   ngOnInit(): void {
     this.fileField.multiple = this.isMulti;
+
+    if (this.acceptType.length) {
+      this.fileField.accept = this.acceptType.join(',');
+    }
+  }
+
+  ngOnDestroy(): void {
+    this.fileField.removeEventListener('change', this.onFieldChange.bind(this));
   }
 
   /** открыть окно загрузки файлов */
@@ -80,5 +93,12 @@ export class DndFilesDirective implements OnInit {
     e.stopPropagation();
 
     this.inDragArea = inDragArea;
+  }
+
+  /** Изменилось состояние поля ввода */
+  private onFieldChange(): void {
+    const files = Array.from(this.fileField.files);
+
+    this.isUploadFile.emit(files);
   }
 }
